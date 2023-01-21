@@ -22,7 +22,7 @@ func randomUserAgent() string {
 
 }
 func main() {
-	res, err := GoogleScrape("akhil sharma")
+	res, err := GoogleScrape("chat gpt")
 	if err == nil {
 		for _, res := range res {
 			fmt.Println(res)
