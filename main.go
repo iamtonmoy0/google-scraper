@@ -63,7 +63,7 @@ func GoogleScrape(searchTerm,countryCode,languageCode string,pages) ([]SearchRes
 		for_,result:= range data{
 			results= append(results,result)
 		}
-		time.Sleep()
+		time.Sleep
 	}
 
 }
