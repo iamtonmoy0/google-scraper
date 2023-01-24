@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"strings"
+	"time"
 
 	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
@@ -20,11 +21,12 @@ type SearchResult struct {
 var userAgents = []string{}
 
 func randomUserAgent() string {
+	rand.Seed(time.Now().Unix())
 	randNum := rand.Int() % len(userAgents)
 	return userAgents[randNum]
 
 }
-func buildGoogleUrls(searchTerm, countryCode,pages,count int) {
+func buildGoogleUrls(searchTerm, countryCode,languageCode string,pages,count int) {
 
 	toScrape := []string{}
 	searchTerm = strings.Trim(searchTerm, "")
@@ -48,11 +50,26 @@ func GoogleScrape(searchTerm,countryCode,languageCode string,pages) ([]SearchRes
 	if err!=nil{
 		return nil,err
 	}
+	for _,page:= range googlePages{
+		res,err:= scrapeClientRequest(page,proxyString)
+		if err!= nil{
+			return nil,err
+		}
+		data,err:= googleResultParsing(res,resultCounter)
+		if err!=nil{
+			return nil,err
+		}
+		resultCounter += len(data)
+		for_,result:= range data{
+			results= append(results,result)
+		}
+		time.Sleep()
+	}
 
 }
 
 func main() {
-	res, err := GoogleScrape("chat gpt", "en","com",1,30)
+	res, err := GoogleScrape("chat gpt", "com","en",nil,1,30,10)
 	if err == nil {
 		for _, res := range res {
 			fmt.Println(res)
