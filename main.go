@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
@@ -245,13 +246,35 @@ func buildGoogleUrls(searchTerm, countryCode,languageCode string,pages,count int
 	return toScrape , nil
 
 }
+// for google result parsing data
+func googleResultParsing( response *http.Response,rank int)([]SearchResult,error){
 
+doc,err:=goquery.NewDocumentFromResponse(response)
+if err!=nil{
+    return nil,err
+}
+results:= []SearchResult{}
+sel := doc.Find("div.g")
+rank++
+for i := range sel.Nodes{
+    item:= sel.Eq(i)
+    linkTag:= item.Find("a")
+    link,_:=lingTag.Attr("href")
+    titleTag:item.Find("h3.r")
+    desc:= descTag.Text()
+    title:= titleTag.Text()
+
+}
+
+
+
+}
 // client scraping 
 func getScrapeClient(proxyString interface{}) *http.Client{
     switch v := proxyString.(type){
     case string:
         proxyUrl,_:= url.Parse(v)
-        return {Transport: &http.Transport{proxy:http.proxyURL(proxyUrl)}}
+        return &http.Client{Transport: &http.Transport{proxy:http.proxyURL(proxyUrl)}}
     default:
          return &http.Client{}
     }
