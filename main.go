@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -243,6 +244,18 @@ func buildGoogleUrls(searchTerm, countryCode,languageCode string,pages,count int
 	}
 	return toScrape , nil
 
+}
+
+// client scraping 
+func getScrapeClient(proxyString interface{}) *http.Client{
+    switch v := proxyString.(type){
+    case string:
+        proxyUrl,_:= url.Parse(v)
+        return {Transport: &http.Transport{proxy:http.proxyURL(proxyUrl)}}
+    default:
+         return &http.Client{}
+    }
+   
 }
 func GoogleScrape(searchTerm,countryCode,languageCode string,pages) ([]SearchResult, err) {
 	results := []SearchResult{}
