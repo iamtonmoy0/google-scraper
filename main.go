@@ -318,7 +318,7 @@ func GoogleScrape(searchTerm, countryCode, languageCode string, proxyString inte
 		for _, result := range data {
 			results = append(results, result)
 		}
-		time.Sleep(time.Duration(backoff) * time.second)
+		time.Sleep(time.Duration(backoff) * time.Second)
 	}
 	return results, nil
 
