@@ -2,4 +2,9 @@ module github.com/iamtonmoy0/google-scraper
 
 go 1.19
 
-require golang.org/x/tools v0.5.0
+require github.com/PuerkitoBio/goquery v1.8.0
+
+require (
+	github.com/andybalholm/cascadia v1.3.1 // indirect
+	golang.org/x/net v0.5.0 // indirect
+)
